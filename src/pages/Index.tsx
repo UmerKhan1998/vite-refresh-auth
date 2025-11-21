@@ -50,28 +50,6 @@ const Index = () => {
             >
               Sign In
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={async () => {
-                const BASE_URL =
-                  "https://anf-dev-server-903cd9f18f9b.herokuapp.com/api";
-                const token = Cookies.get("refreshToken");
-                const response = await axios.post(
-                  `${BASE_URL}/auth/refresh`,
-                  {},
-                  {
-                    withCredentials: true,
-                    headers: {
-                      Authorization: `Bearer ${token}`,
-                    },
-                  }
-                );
-              }}
-              className="text-lg px-8 py-6"
-            >
-              Refresh Token
-            </Button>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mt-20">

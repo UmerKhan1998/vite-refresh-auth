@@ -55,7 +55,6 @@ apiClient.interceptors.response.use(
 
         if (response.data.success && response.data.accessToken) {
           const newAccessToken = response.data.accessToken;
-          const newRefreshToken = response.data.refreshToken;
           Cookies.set("accessToken", newAccessToken);
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return apiClient(originalRequest);
@@ -63,7 +62,6 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         // Refresh failed, clear tokens and redirect to login
         localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
         window.location.href = "/auth";
         return Promise.reject(refreshError);
       }

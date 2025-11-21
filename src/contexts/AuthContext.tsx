@@ -67,7 +67,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
       if (response.data.success && response.data.accessToken) {
         const newAccessToken = response.data.accessToken;
-        const newRefreshToken = response.data.refreshToken;
         setAccessToken(newAccessToken);
         Cookies.set("accessToken", newAccessToken);
         await fetchProfile(newAccessToken);
@@ -77,7 +76,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(null);
       setAccessToken(null);
       localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
     }
   };
 
@@ -98,7 +96,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const response = await apiClient.post("/auth/login", { email, password });
     if (response.data.success && response.data.accessToken) {
       const token = response.data.accessToken;
-      const refreshToken = response.data.refreshToken;
       setAccessToken(token);
       Cookies.set("accessToken", token);
       await fetchProfile(token);
@@ -118,7 +115,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
     if (response.data.success && response.data.accessToken) {
       const token = response.data.accessToken;
-      const refreshToken = response.data.refreshToken;
       setAccessToken(token);
       Cookies.set("accessToken", token);
       await fetchProfile(token);
@@ -142,7 +138,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(null);
       setAccessToken(null);
       localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
     }
   };
 
