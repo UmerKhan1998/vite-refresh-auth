@@ -70,7 +70,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const newRefreshToken = response.data.refreshToken;
         setAccessToken(newAccessToken);
         Cookies.set("accessToken", newAccessToken);
-        Cookies.set("refreshToken", newRefreshToken);
         await fetchProfile(newAccessToken);
       }
     } catch (error) {
@@ -102,7 +101,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const refreshToken = response.data.refreshToken;
       setAccessToken(token);
       Cookies.set("accessToken", token);
-      Cookies.set("refreshToken", refreshToken);
       await fetchProfile(token);
     }
   };
@@ -123,7 +121,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const refreshToken = response.data.refreshToken;
       setAccessToken(token);
       Cookies.set("accessToken", token);
-      Cookies.set("refreshToken", refreshToken);
       await fetchProfile(token);
     }
   };

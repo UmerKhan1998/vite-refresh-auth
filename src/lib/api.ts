@@ -57,7 +57,6 @@ apiClient.interceptors.response.use(
           const newAccessToken = response.data.accessToken;
           const newRefreshToken = response.data.refreshToken;
           Cookies.set("accessToken", newAccessToken);
-          Cookies.set("refreshToken", newRefreshToken);
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return apiClient(originalRequest);
         }
