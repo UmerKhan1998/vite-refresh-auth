@@ -61,7 +61,7 @@ apiClient.interceptors.response.use(
         }
       } catch (refreshError) {
         // Refresh failed, clear tokens and redirect to login
-        localStorage.removeItem("accessToken");
+        Cookies.remove("accessToken");
         window.location.href = "/auth";
         return Promise.reject(refreshError);
       }

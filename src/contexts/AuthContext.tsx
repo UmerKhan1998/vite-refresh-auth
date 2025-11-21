@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error("Token refresh failed:", error);
       setUser(null);
       setAccessToken(null);
-      localStorage.removeItem("accessToken");
+      Cookies.remove("accessToken");
     }
   };
 
@@ -137,7 +137,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setUser(null);
       setAccessToken(null);
-      localStorage.removeItem("accessToken");
+      Cookies.remove("accessToken");
     }
   };
 
