@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const BASE_URL = "https://anf-dev-server-903cd9f18f9b.herokuapp.com/api";
 
@@ -55,8 +56,8 @@ apiClient.interceptors.response.use(
         if (response.data.success && response.data.accessToken) {
           const newAccessToken = response.data.accessToken;
           const newRefreshToken = response.data.refreshToken;
-          localStorage.setItem("accessToken", newAccessToken);
-          localStorage.setItem("refreshToken", newRefreshToken);
+          Cookies.set("accessToken", newAccessToken);
+          Cookies.set("refreshToken", newRefreshToken);
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return apiClient(originalRequest);
         }

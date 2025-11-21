@@ -6,6 +6,7 @@ import React, {
   ReactNode,
 } from "react";
 import { apiClient } from "@/lib/api";
+import Cookies from "js-cookie";
 
 interface User {
   id: string;
@@ -68,8 +69,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const newAccessToken = response.data.accessToken;
         const newRefreshToken = response.data.refreshToken;
         setAccessToken(newAccessToken);
-        localStorage.setItem("accessToken", newAccessToken);
-        localStorage.setItem("refreshToken", newRefreshToken);
+        Cookies.set("accessToken", newAccessToken);
+        Cookies.set("refreshToken", newRefreshToken);
         await fetchProfile(newAccessToken);
       }
     } catch (error) {
@@ -94,15 +95,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     initAuth();
   }, []);
 
-
   const login = async (email: string, password: string) => {
     const response = await apiClient.post("/auth/login", { email, password });
     if (response.data.success && response.data.accessToken) {
       const token = response.data.accessToken;
       const refreshToken = response.data.refreshToken;
       setAccessToken(token);
-      localStorage.setItem("accessToken", token);
-      localStorage.setItem("refreshToken", refreshToken);
+      Cookies.set("accessToken", token);
+      Cookies.set("refreshToken", refreshToken);
       await fetchProfile(token);
     }
   };
@@ -122,8 +122,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const token = response.data.accessToken;
       const refreshToken = response.data.refreshToken;
       setAccessToken(token);
-      localStorage.setItem("accessToken", token);
-      localStorage.setItem("refreshToken", refreshToken);
+      Cookies.set("accessToken", token);
+      Cookies.set("refreshToken", refreshToken);
       await fetchProfile(token);
     }
   };
