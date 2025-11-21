@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshAuth = async () => {
     try {
-      const refreshToken = localStorage.getItem("refreshToken");
+      const refreshToken = Cookies.get("refreshToken");
       if (!refreshToken) {
         throw new Error("No refresh token available");
       }
@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      const token = localStorage.getItem("accessToken");
+      const token = Cookies.get("accessToken");
       if (token) {
         setAccessToken(token);
         await fetchProfile(token);

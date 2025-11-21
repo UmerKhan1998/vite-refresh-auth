@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Zap, Lock } from "lucide-react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const Index = () => {
               onClick={async () => {
                 const BASE_URL =
                   "https://anf-dev-server-903cd9f18f9b.herokuapp.com/api";
-                const token = localStorage.getItem("refreshToken");
+                const token = Cookies.get("refreshToken");
                 const response = await axios.post(
                   `${BASE_URL}/auth/refresh`,
                   {},
