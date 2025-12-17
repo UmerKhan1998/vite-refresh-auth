@@ -98,6 +98,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const token = response.data.accessToken;
       setAccessToken(token);
       Cookies.set("accessToken", token);
+
+      // Store refresh token for silent token refresh via interceptor
+      if (response.data.refreshToken) {
+        Cookies.set("refreshToken", response.data.refreshToken);
+      }
+
       await fetchProfile(token);
     }
   };
@@ -117,6 +123,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const token = response.data.accessToken;
       setAccessToken(token);
       Cookies.set("accessToken", token);
+
+      // Store refresh token for silent token refresh via interceptor
+      if (response.data.refreshToken) {
+        Cookies.set("refreshToken", response.data.refreshToken);
+      }
+
       await fetchProfile(token);
     }
   };
@@ -138,6 +150,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(null);
       setAccessToken(null);
       Cookies.remove("accessToken");
+      Cookies.remove("refreshToken");
     }
   };
 

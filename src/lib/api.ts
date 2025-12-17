@@ -25,23 +25,24 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor for handling errors
+// Response interceptor for handling 401 errors and refreshing token
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // If token expired and we haven't retried yet
+    // If token expired (401) and we haven't retried yet
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+      console.log("[API] 401 received, attempting token refresh...");
 
       try {
-        // Try to refresh the token using refresh token
         const refreshToken = Cookies.get("refreshToken");
         if (!refreshToken) {
           throw new Error("No refresh token available");
         }
 
+        // Use plain axios to avoid interceptor loop
         const response = await axios.post(
           `${BASE_URL}/auth/refresh`,
           {},
@@ -55,13 +56,28 @@ apiClient.interceptors.response.use(
 
         if (response.data.success && response.data.accessToken) {
           const newAccessToken = response.data.accessToken;
+          console.log(
+            "[API] Token refreshed successfully, retrying original request..."
+          );
+
           Cookies.set("accessToken", newAccessToken);
+
+          // Update refresh token if backend rotates it
+          if (response.data.refreshToken) {
+            Cookies.set("refreshToken", response.data.refreshToken);
+          }
+
+          // Retry the original request with new token
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return apiClient(originalRequest);
+        } else {
+          throw new Error("Refresh response missing token");
         }
       } catch (refreshError) {
-        // Refresh failed, clear tokens and redirect to login
+        console.error("[API] Token refresh failed:", refreshError);
+        // Clear all tokens and redirect to login
         Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
         window.location.href = "/auth";
         return Promise.reject(refreshError);
       }
